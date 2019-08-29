@@ -1,6 +1,6 @@
 # Processing Projects
 
-Mini projects made using Processing. Folders ending in h use the haplet
+Mini projects made using Processing. Ideas ending in h use the haplet
 
 1. Move the mouse to create balls with surface tension - move around the Haplet to interact with them.  
 Inspired by: https://www.openprocessing.org/sketch/492096
