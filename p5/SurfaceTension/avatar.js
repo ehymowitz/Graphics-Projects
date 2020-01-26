@@ -4,9 +4,11 @@ function Avatar(x, y, r){
   World.add(world, this.body);
 
   this.move = function(){
+    var pos = this.body.position;
+
     push();
     fill(0,10,70,150);
-    translate(mouseX, mouseY);
+    translate(pos.x, pos.y);
     circle(0,0,this.r);
     pop();
   }

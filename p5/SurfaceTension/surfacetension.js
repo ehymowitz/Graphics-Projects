@@ -1,62 +1,60 @@
 // matter.js module aliases
 var Engine = Matter.Engine,
     World = Matter.World,
-    Bodies = Matter.Bodies;
+    Bodies = Matter.Bodies,
+    Mouse = Matter.Mouse,
+    MouseConstraint = Matter.MouseConstraint;
 
 // World Variables
-var engine;
-var world;
+var engine, world;
+var canvasX = 640, canvasY = 400;
 
 // Shape Variables
-var s_avatar;
 var particles = [];
 var particlesMade = 0;
 var maxParticles = 100;
 var lastTime = 0, threshold = 0;
 
+// Avatar
+var avatar;
+var cMouse, mConst, options;
+
 function setup() {
-  createCanvas(640, 400);
+  var canvas = createCanvas(canvasX, canvasY);
   noStroke();
   noCursor();
 
-  //Physics Creation
+  // Physics Creation
   engine = Engine.create();
   world = engine.world;
   world.gravity.scale = 0;
-  Engine.run(engine);
 
-  s_avatar = new Avatar(mouseX, mouseY, 30);
+  // Avatar
+  avatar = new Avatar(canvasX/2, canvasY/2, 30);
+  cMouse = Mouse.create(canvas.elt);
+  cMouse.pixelRatio = pixelDensity();
+  options = {
+    mouse: cMouse,
+    // body: avatar.Body
+  }
+  mConst = MouseConstraint.create(engine, options);
+  World.add(world, mConst);
 }
 
 function draw() {
   background(32);
-  renderForces();
-  s_avatar.move();
+  Matter.Engine.update(engine);
+  avatar.move();
+  if (mouseX <= canvasX && mouseY >= 10){
+    if (mouseY <= canvasY && mouseY >= 10){
+      if (particlesMade <= 10 && millis() > 5000){
+        addParticles();
+      }
+    }
+  }
   for (var i = 0; i < particles.length; i++){
     particles[i].move();
   }
-}
-
-function renderForces(){ //Needs Fixing
-  // for (var i = 0; i < particles.length; i++){
-  //   var fX = 0.0, fY = 0.0;
-  //   for (var j = particles.length-1; j >= 0 ; j--){
-  //     if (i != j){
-  //       var dx = particles[j].pos.x - balls[i].pos.x;
-  //       var dy = particles[j].pos.y - particles[i].pos.y;
-  //
-  //       var d = sqrt(dx*dx+dy*dy);
-  //       if (d < 1){
-  //         d = 1;
-  //       }
-  //
-  //       var f = (d-4)/(d-0.9);
-  //       fX = (fX + 100*f*dx);
-  //       fY = (fY + 100*f*dy);
-  //     }
-  //   }
-  //   particles[i].force(fX,fY);
-  //   }
 }
 
 function mousePressed(){
@@ -71,13 +69,13 @@ function addParticles(){
   if(millis()-lastTime > threshold){
     lastTime = millis();
     if (particlesMade < maxParticles){
-      particles.push(new Particle(mouseX, mouseY, random(15,30)));
+      particles.push(new Particle(mouseX, mouseY, random(10,20)));
       particlesMade++;
     }
     else {
       threshold = 120;
       particles.shift();
-      particles.push(new Particle(mouseX, mouseY, random(15,30)));
+      particles.push(new Particle(mouseX, mouseY, random(10,20)));
     }
   }
 }

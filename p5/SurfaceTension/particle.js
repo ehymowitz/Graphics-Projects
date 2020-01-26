@@ -1,7 +1,6 @@
 function Particle(x,y,r){
   this.body = Bodies.circle(x,y,r);
   this.r=r;
-
   World.add(world, this.body);
 
   this.move = function(){
