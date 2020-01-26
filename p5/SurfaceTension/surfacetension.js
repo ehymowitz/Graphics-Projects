@@ -11,7 +11,7 @@ var world;
 var s_avatar;
 var particles = [];
 var particlesMade = 0;
-var maxParticles = 50;
+var maxParticles = 100;
 
 function setup() {
   createCanvas(640, 640);

@@ -1,25 +1,25 @@
 public class ballRing{
   private int numberOfBalls;
   private FCircle[] balls;
-    
+
   private float averageSize;
-  
+
   private float averageDistance;
-  
+
   private float angleOffset;
-     
+
   public float Xpos;
   public float Ypos;
-  
+
   public FWorld world;
-    
+
   public ballRing(int n, float as, float x, float y, float ad, float ao, FWorld w){
     numberOfBalls = n;
     balls = new FCircle[numberOfBalls];
     averageSize = as;
     Xpos = x;
     Ypos = y;
-    averageDistance = ad;  
+    averageDistance = ad;
     angleOffset = ao;
     for (int i = 0; i < balls.length; i++){
           balls[i] = new FCircle(as);
@@ -31,7 +31,7 @@ public class ballRing{
           w.add(balls[i]);
         }
       }
-     
+
   public void updateRing(float f, float sa, float da){
     float Distance = averageDistance+da*sin(f*millis());
     float Size = averageSize-sa*sin(f*millis());
