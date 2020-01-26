@@ -12,10 +12,12 @@ var s_avatar;
 var particles = [];
 var particlesMade = 0;
 var maxParticles = 100;
+var lastTime = 0, threshold = 0;
 
 function setup() {
-  createCanvas(640, 640);
+  createCanvas(640, 400);
   noStroke();
+  noCursor();
 
   //Physics Creation
   engine = Engine.create();
@@ -66,12 +68,16 @@ function mouseDragged(){
 }
 
 function addParticles(){
-  if (particlesMade < maxParticles){
-    particles.push(new Particle(mouseX, mouseY, random(15,30)));
-    particlesMade++;
-  }
-  else {
-    particles.shift();
-    particles.push(new Particle(mouseX, mouseY, random(15,30)));
+  if(millis()-lastTime > threshold){
+    lastTime = millis();
+    if (particlesMade < maxParticles){
+      particles.push(new Particle(mouseX, mouseY, random(15,30)));
+      particlesMade++;
+    }
+    else {
+      threshold = 120;
+      particles.shift();
+      particles.push(new Particle(mouseX, mouseY, random(15,30)));
+    }
   }
 }
