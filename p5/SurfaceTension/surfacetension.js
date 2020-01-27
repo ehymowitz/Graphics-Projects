@@ -2,8 +2,7 @@
 var Engine = Matter.Engine,
     World = Matter.World,
     Bodies = Matter.Bodies,
-    Mouse = Matter.Mouse,
-    MouseConstraint = Matter.MouseConstraint;
+    Constraint = Matter.Constraint;
 
 // World Variables
 var engine, world;
@@ -16,13 +15,13 @@ var maxParticles = 100;
 var lastTime = 0, threshold = 0;
 
 // Avatar
-var avatar;
-var cMouse, mConst, options;
+var avatar, gPart;
+var constr, options;
 
 function setup() {
   var canvas = createCanvas(canvasX, canvasY);
   noStroke();
-  noCursor();
+  // noCursor();
 
   // Physics Creation
   engine = Engine.create();
@@ -31,20 +30,22 @@ function setup() {
 
   // Avatar
   avatar = new Avatar(canvasX/2, canvasY/2, 30);
-  cMouse = Mouse.create(canvas.elt);
-  cMouse.pixelRatio = pixelDensity();
+  gPart = new GodParticle(canvasX/2, canvasY/2, 20);
   options = {
-    mouse: cMouse,
-    // body: avatar.Body
+    bodyA: gPart.body,
+    bodyB: avatar.body,
+    length: 70,
+    stiffness: 0.1
   }
-  mConst = MouseConstraint.create(engine, options);
-  World.add(world, mConst);
+  constr = Constraint.create(options);
+  World.add(world, constr);
 }
 
 function draw() {
   background(32);
   Matter.Engine.update(engine);
   avatar.move();
+  gPart.move();
   if (mouseX <= canvasX && mouseY >= 10){
     if (mouseY <= canvasY && mouseY >= 10){
       if (particlesMade <= 10 && millis() > 5000){
