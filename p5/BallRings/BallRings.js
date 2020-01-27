@@ -2,7 +2,8 @@ var canvasX = 640, canvasY = 500
 var ad = 90, amp = 50, ar = 8, ramp = 5, balls = 40, x = canvasX/2, y = canvasY/2;
 
 function setup() {
-  createCanvas(canvasX, canvasY);
+  var canvas = createCanvas(canvasX, canvasY);
+  canvas.parent('Ball-Rings');
   noStroke();
   noCursor();
 }

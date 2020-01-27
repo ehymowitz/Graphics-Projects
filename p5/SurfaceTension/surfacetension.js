@@ -20,6 +20,7 @@ var constr, options;
 
 function setup() {
   var canvas = createCanvas(canvasX, canvasY);
+  canvas.parent('Surface-Tension');
   noStroke();
   // noCursor();
 
