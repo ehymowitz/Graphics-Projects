@@ -15,7 +15,7 @@ function draw(){
   }
   push();
   fill("Black");
-  textSize(16);
+  textSize(12);
   textAlign(CENTER);
   text("← Ring Color →, ↑ Ring Size ↓,", mouseX, mouseY);
   pop();
@@ -23,8 +23,8 @@ function draw(){
 
 function ballring(ad, amp, ar, ramp, freq, balls, x, y){
   var mouseFactorX = 0, mouseFactorY = 0;
-  if(mouseX <= 640 && mouseX >=10){
-    if(mouseY <= 640 && mouseY >=10){
+  if(mouseX <= canvasX && mouseX >=10){
+    if(mouseY <= canvasY && mouseY >=10){
       mouseFactorX = map(mouseX, 0, canvasX, 0, 255);
       mouseFactorY = map(mouseY, 0, canvasY,0,100);
     }
