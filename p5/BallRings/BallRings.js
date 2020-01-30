@@ -33,8 +33,8 @@ if (!mouseIsPressed) {
 
 function ballring(ad, amp, ar, ramp, freq, balls, x, y){
   var mouseFactorX = 0, mouseFactorY = 0;
-  if(mouseX <= canvasX && mouseX >=10){
-    if(mouseY <= canvasY && mouseY >=10){
+  if(mouseX <= canvasX-10 && mouseX >=10){
+    if(mouseY <= canvasY-10 && mouseY >=10){
       mouseFactorX = map(mouseX, 0, canvasX, 0, 255);
       mouseFactorY = map(mouseY, 0, canvasY,0,100);
     }
