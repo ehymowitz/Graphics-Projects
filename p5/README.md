@@ -2,7 +2,7 @@
 
 p5 project ported from Processing for website use, using matter.js physics engine where useful.
 
-Surface Tension - Move the mouse to create more balls and interact with them.
+ParticlePlay - Move the mouse to create more balls and interact with them.
 Inspired by: https://www.openprocessing.org/sketch/492096
 
 BallRings - Creates a ball rings which move in an aesthetic way. Move the mouse to change parameters.
