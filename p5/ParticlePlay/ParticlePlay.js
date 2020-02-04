@@ -3,14 +3,14 @@ var canvasX = 640, canvasY = 400;
 // Particle Tracking
 var particleX = [], particleY = [], velocityX = [], velocityY =[], particleR = [];
 // Mouse Componenet
-var vXm = [], vYm = [], aXm = [], aYm = [];
+var vXm = [], vYm = [];
 // Other Particles Component
 var vXp = [], vYp = [];
 
 // Numbers Tracking
 var particlesMade = 0;
-var maxParticles = 100;
-var lastTime = 0, threshold = 0;
+var maxParticles = 700;
+var lastTime = 0, threshold = 100;
 
 function setup() {
   createCanvas(canvasX, canvasY);
@@ -27,33 +27,47 @@ function draw() {
 
   push();
   fill(64, 255, 255, 130);
-  // Mouse Componenet
+  // Particle Component
   for (var i = 0; i < particlesMade; i++){
+    var aXp = 0, aYp = 0;
+    for (var j = 0; j < particlesMade; j++){
+      if (i != j){
+        var dX = particleX[i] - particleX[j];
+        var dY = particleY[i] - particleY[j];
 
-    if (particlesMade > 0){
-      var dXm = particleX[i] - mouseX;
-      var dYm = particleY[i] - mouseY;
+        d = sqrt(dX*dX + dY*dY);
+        if (d < 1) d = 1;
 
-      var distance = sqrt(dXm*dXm + dYm*dYm);
-      if (distance < 1) distance = 1;
-
-      var fm = distance * particleR * 0.005;
-
-      aXm[i] += dXm*fm * 0.005;
-      aYm[i] += dYm*fm * 0.005;
-
-      vXm[i] += aXm[i] * 0.005;
-      vYm[i] += aYm[i] * 0.005;
-
-      console.log(vXm);
-
+        var f = (canvasY/1.8-d)/d;
+        aXp += f*dX*0.1;
+        aYp += f*dY*0.1;
+      }
     }
-
+    vXp[i] = vXp[i]*0.95 + aXp*0.05;
+    vYp[i] = vYp[i]*0.95 + aYp*0.05;
   }
 
+  // // Mouse Componenet
+  // for (var i = 0; i < particlesMade; i++){
+  //   var aXm = 0, aYm = 0;
+  //   var dXm = particleX[i] - mouseX;
+  //   var dYm = particleY[i] - mouseY;
+  //
+  //   d = sqrt(dXm*dXm + dYm*dYm);
+  //   if (d < 1) d = 1;
+  //
+  //   var f = (canvasY/20-d)/d;
+  //   aXm += f*dXm*0.01;
+  //   aYm += f*dYm*0.01;
+  //   vXm[i] = vXm[i]*0.95 + aXm*0.05;
+  //   vYm[i] = vYm[i]*0.95 + aYm*0.05;
+  // }
+
+
+  // Particle Generation
   for (var i = 0; i < particlesMade; i++){
-      particleX[i] += vXm[i];
-      particleY[i] += vYm[i];
+      particleX[i] += vXm[i]+vXp[i];
+      particleY[i] += vYm[i]+vYp[i];
 
       circle(particleX[i], particleY[i], particleR[i]);
     }
@@ -64,15 +78,25 @@ function mousePressed(){
   addParticles();
 }
 
+function mouseDragged(){
+  addParticles();
+}
+
 function addParticles(){
-  particleX.push(mouseX);
-  particleY.push(mouseY);
-  particleR.push(random(10,20));
-  velocityY.push(0);
-  velocityX.push(0);
-  aXm.push(0);
-  aXm.push(0);
-  vXm.push(0);
-  vYm.push(0);
-  particlesMade++;
+  var time = millis();
+  if (particlesMade < maxParticles){
+    if (time - lastTime > threshold){
+      particleX.push(mouseX);
+      particleY.push(mouseY);
+      particleR.push(random(10,20));
+      velocityY.push(0);
+      velocityX.push(0);
+      vXm.push(0);
+      vYm.push(0);
+      vXp.push(0);
+      vYp.push(0);
+      particlesMade++;
+      lastTime = time;
+    }
+  }
 }
