@@ -6,6 +6,8 @@ var particleX = [], particleY = [], velocityX = [], velocityY =[], particleR = [
 var vXm = [], vYm = [];
 // Other Particles Component
 var vXp = [], vYp = [];
+// Center hold
+var vXc = [], vYc = [];
 
 // Numbers Tracking
 var particlesMade = 0;
@@ -47,27 +49,26 @@ function draw() {
     vYp[i] = vYp[i]*0.95 + aYp*0.05;
   }
 
-  // // Mouse Componenet
-  // for (var i = 0; i < particlesMade; i++){
-  //   var aXm = 0, aYm = 0;
-  //   var dXm = particleX[i] - mouseX;
-  //   var dYm = particleY[i] - mouseY;
-  //
-  //   d = sqrt(dXm*dXm + dYm*dYm);
-  //   if (d < 1) d = 1;
-  //
-  //   var f = (canvasY/20-d)/d;
-  //   aXm += f*dXm*0.01;
-  //   aYm += f*dYm*0.01;
-  //   vXm[i] = vXm[i]*0.95 + aXm*0.05;
-  //   vYm[i] = vYm[i]*0.95 + aYm*0.05;
-  // }
+  // Center Componenet
+  for (var i = 0; i < particlesMade; i++){
+    var aXc = 0, aYc = 0;
+    var dXc = particleX[i] - canvasX/2;
+    var dYc = particleY[i] - canvasY/2;
 
+    d = sqrt(dXc*dXc + dYc*dYc);
+    if (d < 1) d = 1;
+
+    var f = (canvasY/2-d)/d;
+    aXc += f*dXc*0.1;
+    aYc += f*dYc*0.1;
+    vXc[i] = vXc[i]*0.96 + aXc*0.05;
+    vYc[i] = vYc[i]*0.96 + aYc*0.05;
+  }
 
   // Particle Generation
   for (var i = 0; i < particlesMade; i++){
-      particleX[i] += vXm[i]+vXp[i];
-      particleY[i] += vYm[i]+vYp[i];
+      particleX[i] += vXm[i]+vXp[i]+vXc[i];
+      particleY[i] += vYm[i]+vYp[i]+vYc[i];
 
       circle(particleX[i], particleY[i], particleR[i]);
     }
@@ -95,6 +96,8 @@ function addParticles(){
       vYm.push(0);
       vXp.push(0);
       vYp.push(0);
+      vXc.push(0);
+      vYc.push(0);
       particlesMade++;
       lastTime = time;
     }
